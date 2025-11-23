@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -8,6 +9,9 @@ class Category(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
 
+    def __str__(self):
+        return self.name
+
 
 class Topic(models.Model):
     name = models.CharField(max_length=60)
@@ -16,5 +20,16 @@ class Topic(models.Model):
 
     class Meta:
         ordering = ['name']
+    
+    def __str__(self):
+        return self.name
 
-# ORM - Object Relational Mapping
+
+class Post(models.Model):
+    title = models.CharField(max_length=150)
+    text = models.TextField()
+    topic = models.ForeignKey('Topic', on_delete=models.CASCADE)
+    slug = models.SlugField(unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
