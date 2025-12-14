@@ -8,6 +8,7 @@ class Category(models.Model):
 
     class Meta:
         verbose_name_plural = "Categories"
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -33,3 +34,13 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+       wyrazy = self.text.split()
+       if len(wyrazy) <= 5:
+            return self.text
+       else:
+            return ' '.join(wyrazy[:5]) + ' ...'
+    
+    class Meta:
+        ordering = ['-created_at']
